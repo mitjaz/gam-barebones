@@ -1,0 +1,15 @@
+{
+  "name": "react-native-heja-gam",
+  "version": "0.0.0",
+  "description": "GAM adapter",
+  "main": "src/index",
+  "author": " <> ()",
+  "license": "UNLICENSED",
+  "homepage": "#readme",
+  "scripts": {
+    "format": "prettier --write ./src"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1"
+  }
+}
