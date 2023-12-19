@@ -17,6 +17,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -36,6 +37,8 @@ import com.google.android.gms.ads.nativead.NativeCustomFormatAd;
 import com.google.android.gms.ads.nativead.NativeCustomFormatAd.OnCustomFormatAdLoadedListener;
 import com.hejagam.customClasses.CustomTargeting;
 import com.hejagam.utils.Targeting;
+
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -613,7 +616,9 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     public void setCallToActionTextView(int tagId) {
         Log.d("NativeAdViewContainer", "setCallToActionTextView");
-        this.callToActionTextViewTagId = tagId;
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setCallToActionView(view);
     }
 
     @Override
