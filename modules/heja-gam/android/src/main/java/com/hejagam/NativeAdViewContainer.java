@@ -18,7 +18,6 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.LoadAdError;
@@ -238,6 +237,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     public void reloadAd() {
+        Log.d("NativeAdViewContainer", "reloadAd");
         this.setupAdLoader();
 
         if (adLoader != null) {
@@ -313,6 +313,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                     AdManagerAdRequest adRequest = adRequestBuilder.build();
                     if (adLoader != null) {
                         adLoader.loadAd(adRequest);
+                        Log.d("NativeAdViewContainer", "adloader initiated loading of ad.");
                     }
                 }
             });
@@ -634,24 +635,59 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     public void setCallToActionTextView(int tagId) {
-        Log.d("NativeAdViewContainer", "setCallToActionTextView");
+        Log.d("NativeAdViewContainer", String.format("setCallToActionTextView %d", tagId));
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setCallToActionView(view);
     }
 
+    public void setHeadlineTextView(int tagId) {
+        Log.d("NativeAdViewContainer", "setPropHeadlineTextView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setHeadlineView(view);
+    }
+
+    public void setBodyTextView(int tagId) {
+        Log.d("NativeAdViewContainer", "setBodyTextView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setBodyView(view);
+    }
+
+    public void setAdvertiserNameView(int tagId) {
+        Log.d("NativeAdViewContainer", "setAdveriserNameView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setAdvertiserView(view);
+    }
+
+    public void setIconView(int tagId) {
+        Log.d("NativeAdViewContainer", "setIconView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setIconView(view);
+    }
+
+    public void setImageView(int tagId) {
+        Log.d("NativeAdViewContainer", "setImageView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setImageView(view);
+    }
+
     public void setMediaView(int tagId) {
-        Log.d("ADTEST", String.format("setMediaView %d", tagId));
+        Log.d("NativeAdViewContainer", String.format("setMediaView %d", tagId));
         try {
             mediaView = nativeAdView.findViewById(tagId);
             if (mediaView != null) {
-                Log.d("ADTEST", String.format("MediaView is not null"));
+                Log.d("NativeAdViewContainer", String.format("MediaView is not null"));
                 nativeAd.getMediaContent().getVideoController().setVideoLifecycleCallbacks(mediaView.videoLifecycleCallbacks);
                 nativeAdView.setMediaView(nativeAdView.findViewById(tagId));
                 mediaView.requestLayout();
             }
         } catch (Exception e) {
-            Log.e("ADTEST", e.getLocalizedMessage());
+            Log.e("NativeAdViewContainer", e.getLocalizedMessage());
         }
     }
 
@@ -694,40 +730,5 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         if (this.adLoader != null) {
             this.adLoader = null;
         }
-    }
-
-    public void setHeadlineTextView(int tagId) {
-        Log.d("NativeAdViewContainer", "setPropHeadlineTextView");
-        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
-        View view = uiManagerModule.resolveView(tagId);
-        nativeAdView.setHeadlineView(view);
-    }
-
-    public void setBodyTextView(int tagId) {
-        Log.d("NativeAdViewContainer", "setBodyTextView");
-        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
-        View view = uiManagerModule.resolveView(tagId);
-        nativeAdView.setBodyView(view);
-    }
-
-    public void setAdvertiserNameView(int tagId) {
-        Log.d("NativeAdViewContainer", "setAdveriserNameView");
-        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
-        View view = uiManagerModule.resolveView(tagId);
-        nativeAdView.setAdvertiserView(view);
-    }
-
-    public void setIconView(int tagId) {
-        Log.d("NativeAdViewContainer", "setIconView");
-        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
-        View view = uiManagerModule.resolveView(tagId);
-        nativeAdView.setIconView(view);
-    }
-
-    public void setImageView(int tagId) {
-        Log.d("NativeAdViewContainer", "setImageView");
-        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
-        View view = uiManagerModule.resolveView(tagId);
-        nativeAdView.setImageView(view);
     }
 }

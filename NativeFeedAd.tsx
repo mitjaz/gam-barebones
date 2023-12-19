@@ -4,8 +4,8 @@ import {
   HeadlineTextView,
   IconView,
   CallToActionTextView,
-  MediaView,
-} from 'react-native-heja-gam';
+  MediaView, ImageView
+} from "react-native-heja-gam";
 import {parseGamAdHeadline} from './utils';
 import {NativeAdInfo} from './NativeAdInfo';
 
@@ -48,6 +48,7 @@ export default function NativeFeedAd({
         adAspectRatio={adAspectRatio}
         style={styles.imageWrapper}
       />
+      <ImageView style={{height: 300}}/>
       <View style={styles.cta}>
         <CallToActionTextView style={styles.ctaText} />
         <View style={styles.ctaIcon} pointerEvents="none">

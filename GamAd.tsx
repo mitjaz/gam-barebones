@@ -48,7 +48,6 @@ export const GamAd = ({
         validAdTypes={validAdTypes}
         onAdLoaded={event => {
           console.log('adResponse', JSON.stringify(event, null, 2));
-
           setAdResponse(event);
         }}
         onAdFailedToLoad={error => {
