@@ -2,10 +2,13 @@ import {Text, View} from 'react-native';
 import {GamAd} from './GamAd';
 import {NativeAdsManager, SIMULATOR_ID} from './modules/heja-gam/src';
 
-export const feedAdsManager = new NativeAdsManager(
-  '/22897783575/MULTI_FORMAT',
-  [SIMULATOR_ID],
-);
+const feedAdsManager = new NativeAdsManager('/22897783575/MULTI_FORMAT', [
+  SIMULATOR_ID,
+]);
+
+const adManagerWithMedia = new NativeAdsManager('/256416529/H_MULTI_FEED', [
+  SIMULATOR_ID,
+]);
 
 export default function Ads() {
   return (
@@ -16,7 +19,7 @@ export default function Ads() {
         </Text>
       </View>
       <GamAd
-        adsManager={feedAdsManager}
+        adsManager={adManagerWithMedia}
         renderNativeAd={ad => {
           console.log('ad', JSON.stringify(ad, null, 2));
 
