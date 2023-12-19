@@ -7,6 +7,8 @@ import {
   NativeAdsManager,
 } from 'react-native-heja-gam';
 import NativeFeedAd from './NativeFeedAd';
+import {Text, TouchableOpacity} from 'react-native';
+import {reloadAd} from 'react-native-heja-gam/src/native-ads/CTKAdManagerNative';
 
 type Props = {
   adsManager: NativeAdsManager;
@@ -35,28 +37,37 @@ export const GamAd = ({
   };
 
   return (
-    <NativeAdView
-      ref={adRef}
-      adsManager={adsManager}
-      renderNativeAd={(ad: AdType) => (
-        <NativeFeedAd adHasIcon={true} adAspectRatio={1.5} />
-      )}
-      targeting={{customTargeting}}
-      validAdTypes={validAdTypes}
-      onAdLoaded={event => {
-        console.log('adResponse', JSON.stringify(event, null, 2));
+    <>
+      <NativeAdView
+        ref={adRef}
+        adsManager={adsManager}
+        renderNativeAd={(ad: AdType) => (
+          <NativeFeedAd adHasIcon={true} adAspectRatio={1.5} />
+        )}
+        targeting={{customTargeting}}
+        validAdTypes={validAdTypes}
+        onAdLoaded={event => {
+          console.log('adResponse', JSON.stringify(event, null, 2));
 
-        setAdResponse(event);
-      }}
-      onAdFailedToLoad={error => {
-        console.log(error);
-        Bugsnag.notify(error);
-      }}
-      onAdPress={() => {
-        setAllowDeepLinks();
-      }}
-      validAdSizes={validAdSizes}
-      style={{width: '100%'}}
-    />
+          setAdResponse(event);
+        }}
+        onAdFailedToLoad={error => {
+          console.log(error);
+          Bugsnag.notify(error);
+        }}
+        onAdPress={() => {
+          setAllowDeepLinks();
+        }}
+        validAdSizes={validAdSizes}
+        style={{width: '100%'}}
+      />
+      <TouchableOpacity
+        style={{backgroundColor: 'black', padding: 8, margin: 8}}
+        onPress={() => {
+          adRef.current?.reloadAd();
+        }}>
+        <Text style={{color: 'white'}}>Reload ad 🔄</Text>
+      </TouchableOpacity>
+    </>
   );
 };

@@ -4,7 +4,10 @@ import {
   HeadlineTextView,
   IconView,
   CallToActionTextView,
+  MediaView,
 } from 'react-native-heja-gam';
+import {parseGamAdHeadline} from './utils';
+import {NativeAdInfo} from './NativeAdInfo';
 
 type Props = {
   adAspectRatio?: number;
@@ -21,39 +24,31 @@ export default function NativeFeedAd({
     <View style={styles.postOuterWrapper}>
       <View style={styles.top}>
         <View style={styles.sender}>
-          {/* {adHasIcon && <IconView style={styles.profile_image} />} */}
-          {/* <HeadlineTextView
+          {adHasIcon && <IconView style={styles.profile_image} />}
+          <HeadlineTextView
             numberOfLines={1}
             style={styles.nameText}
             parseHeadline={parseGamAdHeadline}
-          /> */}
+          />
 
-          {/* {badge && (
+          {badge && (
             <NativeAdInfo
               style={{
-                backgroundColor: colors.default.grayLight,
+                backgroundColor: '#ccc',
                 paddingHorizontal: 12,
                 borderRadius: 50,
-              }}
-            >
-              <Text style={{ fontSize: 12 }}>{Translator.singular('Ad')}</Text>
+              }}>
+              <Text style={{fontSize: 12}}>Ad</Text>
             </NativeAdInfo>
-          )} */}
+          )}
         </View>
       </View>
       <BodyTextView style={{marginTop: 8}} />
-      {/* <NativeAdMediaView
-        adAspectRatio={adAspectRatio}
-        style={styles.imageWrapper}
-      /> */}
+      <MediaView adAspectRatio={adAspectRatio} style={styles.imageWrapper} />
       <View style={styles.cta}>
         <CallToActionTextView style={styles.ctaText} />
         <View style={styles.ctaIcon} pointerEvents="none">
-          {/* <Icon
-            name="ios-arrow-forward"
-            color={colors.default.white}
-            size={24}
-          /> */}
+          <Text>➡️</Text>
         </View>
       </View>
     </View>
