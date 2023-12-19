@@ -362,16 +362,16 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     @Override
-    public void onNativeAdLoaded(NativeAd nativeAd) {
+    public void onNativeAdLoaded(NativeAd ad) {
         if (nativeAd != null) {
             nativeAd.destroy();
         }
-        this.nativeAd = nativeAd;
-        nativeAdView.setNativeAd(nativeAd);
+        this.nativeAd = ad;
+
+        nativeAdView.setNativeAd(ad);
         removeAllViews();
         addView(nativeAdView);
-
-        setNativeAd(nativeAd);
+        setNativeAd(ad);
     }
 
     @Override
