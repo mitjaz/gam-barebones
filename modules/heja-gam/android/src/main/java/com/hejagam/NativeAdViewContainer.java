@@ -15,10 +15,9 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
-import com.facebook.react.uimanager.UIManagerModule;
-import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.LoadAdError;
@@ -38,15 +37,13 @@ import com.google.android.gms.ads.nativead.NativeCustomFormatAd.OnCustomFormatAd
 import com.hejagam.customClasses.CustomTargeting;
 import com.hejagam.utils.Targeting;
 
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class NativeAdViewContainer extends ReactViewGroup implements AppEventListener,
-    LifecycleEventListener, OnNativeAdLoadedListener,
-    OnAdManagerAdViewLoadedListener, OnCustomFormatAdLoadedListener {
+        LifecycleEventListener, OnNativeAdLoadedListener,
+        OnAdManagerAdViewLoadedListener, OnCustomFormatAdLoadedListener {
     public static final String AD_TYPE_BANNER = "banner";
     public static final String AD_TYPE_NATIVE = "native";
     public static final String AD_TYPE_TEMPLATE = "template";
@@ -79,6 +76,10 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     List<String> customClickTemplateIds;
     int callToActionTextViewTagId;
 
+    RNAdManagerMediaView mediaView;
+
+    NativeAd nativeAd;
+
     /**
      * Creates new NativeAdView instance and retrieves event emitter
      *
@@ -97,13 +98,26 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     private boolean isFluid() {
-      return true;
-      // return AdSize.FLUID.equals(this.adSize);
+        return true;
+        // return AdSize.FLUID.equals(this.adSize);
     }
 
     public void loadAd(RNAdManagerNativeManager.AdsManagerProperties adsManagerProperties) {
         this.testDevices = adsManagerProperties.getTestDevices();
         this.adUnitID = adsManagerProperties.getAdUnitID();
+    }
+
+    public void setNativeAd() {
+        if (nativeAdView != null && nativeAd != null) {
+            nativeAdView.setNativeAd(nativeAd);
+            if (mediaView != null && nativeAdView.getMediaView() != null) {
+                nativeAdView.getMediaView().setMediaContent(nativeAd.getMediaContent());
+                if (nativeAd.getMediaContent().hasVideoContent()) {
+                    mediaView.setVideoController(nativeAd.getMediaContent().getVideoController());
+                    mediaView.setMedia(nativeAd.getMediaContent());
+                }
+            }
+        }
     }
 
     private void setupAdLoader() {
@@ -114,13 +128,13 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         final ReactApplicationContext reactContext = this.applicationContext;
 
         VideoOptions videoOptions = new VideoOptions.Builder()
-            .setStartMuted(true)
-            .build();
+                .setStartMuted(true)
+                .build();
 
         NativeAdOptions adOptions = new NativeAdOptions.Builder()
-            .setVideoOptions(videoOptions)
-            .setAdChoicesPlacement(NativeAdOptions.ADCHOICES_TOP_LEFT)
-            .build();
+                .setVideoOptions(videoOptions)
+                .setAdChoicesPlacement(NativeAdOptions.ADCHOICES_TOP_LEFT)
+                .build();
 
         // ArrayList<AdSize> adSizes = new ArrayList<AdSize>();
         // if (adSize != null) {
@@ -159,20 +173,20 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                 if (!curCustomTemplateID.isEmpty()) {
                     if (customClickTemplateIds != null && customClickTemplateIds.contains(curCustomTemplateID)) {
                         builder.forCustomFormatAd(curCustomTemplateID,
-                            NativeAdViewContainer.this,
-                            new NativeCustomFormatAd.OnCustomClickListener() {
-                                @Override
-                                public void onCustomClick(NativeCustomFormatAd ad, String assetName) {
-                                    WritableMap customClick = Arguments.createMap();
-                                    customClick.putString("assetName", assetName);
-                                    for (String adAssetName : ad.getAvailableAssetNames()) {
-                                        if (ad.getText(adAssetName) != null) {
-                                            customClick.putString(adAssetName, ad.getText(adAssetName).toString());
+                                NativeAdViewContainer.this,
+                                new NativeCustomFormatAd.OnCustomClickListener() {
+                                    @Override
+                                    public void onCustomClick(NativeCustomFormatAd ad, String assetName) {
+                                        WritableMap customClick = Arguments.createMap();
+                                        customClick.putString("assetName", assetName);
+                                        for (String adAssetName : ad.getAvailableAssetNames()) {
+                                            if (ad.getText(adAssetName) != null) {
+                                                customClick.putString(adAssetName, ad.getText(adAssetName).toString());
+                                            }
                                         }
+                                        sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CUSTOM_CLICK, customClick);
                                     }
-                                    sendEvent(RNAdManagerNativeViewManager.EVENT_AD_CUSTOM_CLICK, customClick);
-                                }
-                            });
+                                });
                     } else {
                         builder.forCustomFormatAd(curCustomTemplateID, NativeAdViewContainer.this, null);
                     }
@@ -241,9 +255,9 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
                             testDevicesList.add(testDevice);
                         }
                         RequestConfiguration requestConfiguration
-                            = new RequestConfiguration.Builder()
-                            .setTestDeviceIds(testDevicesList)
-                            .build();
+                                = new RequestConfiguration.Builder()
+                                .setTestDeviceIds(testDevicesList)
+                                .build();
                         MobileAds.setRequestConfiguration(requestConfiguration);
                     }
 
@@ -348,6 +362,10 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     @Override
     public void onNativeAdLoaded(NativeAd nativeAd) {
+        if (nativeAd != null) {
+            nativeAd.destroy();
+        }
+        this.nativeAd = nativeAd;
         nativeAdView.setNativeAd(nativeAd);
         removeAllViews();
         addView(nativeAdView);
@@ -370,8 +388,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
         if (isFluid()) {
             AdManagerAdView.LayoutParams layoutParams = new AdManagerAdView.LayoutParams(
-                ReactViewGroup.LayoutParams.MATCH_PARENT,
-                ReactViewGroup.LayoutParams.WRAP_CONTENT
+                    ReactViewGroup.LayoutParams.MATCH_PARENT,
+                    ReactViewGroup.LayoutParams.WRAP_CONTENT
             );
             adView.setLayoutParams(layoutParams);
 
@@ -388,8 +406,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
         if (isFluid()) {
             adView.measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY)
+                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY)
             );
         } else {
             adView.measure(width, height);
@@ -569,7 +587,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     public void setAdSize() {
-      // this.adSize = adSize;
+        // this.adSize = adSize;
     }
 
     public void setValidAdSizes() {
@@ -619,6 +637,21 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setCallToActionView(view);
+    }
+
+    public void setMediaView(int tagId) {
+        Log.d("ADTEST", String.format("setMediaView %d", tagId));
+        try {
+            mediaView = nativeAdView.findViewById(tagId);
+            if (mediaView != null) {
+                Log.d("ADTEST", String.format("MediaView is not null"));
+                nativeAd.getMediaContent().getVideoController().setVideoLifecycleCallbacks(mediaView.videoLifecycleCallbacks);
+                nativeAdView.setMediaView(nativeAdView.findViewById(tagId));
+                mediaView.requestLayout();
+            }
+        } catch (Exception e) {
+            Log.e("ADTEST", e.getLocalizedMessage());
+        }
     }
 
     @Override

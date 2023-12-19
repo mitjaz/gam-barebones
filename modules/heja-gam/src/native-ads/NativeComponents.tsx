@@ -139,7 +139,7 @@ export const IconView = (props: Omit<ImageProps, 'source'>) => {
     nativeAdView?.setNativeProps({
       iconView: findNodeHandle(iconRef.current),
     });
-  }, [nativeAd]);
+  }, [nativeAd, nativeAdView]);
 
   return (
     <Image {...props} ref={iconRef} source={{ uri: nativeAd?.icon?.uri }} />
@@ -157,11 +157,10 @@ export const MediaView = (props: any) => {
       return;
     }
 
-    nodeHandle = findNodeHandle(mediaRef.current);
     nativeAdView?.setNativeProps({
-      mediaView: nodeHandle,
+      mediaView: findNodeHandle(mediaRef.current),
     });
-  }, [nativeAd]);
+  }, [nativeAd, nativeAdView]);
 
   useEffect(() => {
     return () => {

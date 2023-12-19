@@ -44,7 +44,10 @@ export default function NativeFeedAd({
         </View>
       </View>
       <BodyTextView style={{marginTop: 8}} />
-      <MediaView adAspectRatio={adAspectRatio} style={styles.imageWrapper} />
+      <MediaView
+        adAspectRatio={adAspectRatio}
+        style={styles.imageWrapper}
+      />
       <View style={styles.cta}>
         <CallToActionTextView style={styles.ctaText} />
         <View style={styles.ctaIcon} pointerEvents="none">

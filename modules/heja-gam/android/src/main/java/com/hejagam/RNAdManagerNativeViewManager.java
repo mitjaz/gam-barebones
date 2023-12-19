@@ -46,6 +46,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String EVENT_APP_EVENT = "onAppEvent";
     public static final String EVENT_AD_RECORD_IMPRESSION = "onAdRecordImpression";
     public static final String SET_CALL_TO_ACTION_TEXT_VIEW = "setCallToActionTextView";
+    public static final String SET_MEDIA_VIEW = "mediaView";
     public static final int COMMAND_RELOAD_AD = 1;
 
     private static final String REACT_CLASS = "CTKAdManagerNative";
@@ -220,6 +221,12 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public void setCallToActionTextView(final NativeAdViewContainer view, final int tagId) {
         Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setCallToActionTextView(tagId);
+    }
+
+    @ReactProp(name = SET_MEDIA_VIEW)
+    public void setMediaView(final NativeAdViewContainer view, final  int tagId) {
+        view.setMediaView(tagId);
+        view.setNativeAd();
     }
 
     @ReactProp(name = PROP_CUSTOM_CLICK_TEMPLATE_IDS)

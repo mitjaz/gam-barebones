@@ -9,10 +9,10 @@ export const CTKAdManagerMediaView =
     ? requireNativeComponent<NativeAdNativeProps>(ComponentName)
     : () => {
         // CURRENTLY ONLY EXISTS ON IOS
-        if (Platform.OS === 'android') {
+        /*if (Platform.OS === 'android') {
           console.warn('CTKAdManagerMediaView is returning null!!');
           return null;
-        }
+        }*/
 
         throw new Error(LINKING_ERROR);
       };
