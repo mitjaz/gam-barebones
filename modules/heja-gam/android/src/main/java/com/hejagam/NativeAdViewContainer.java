@@ -18,6 +18,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.LoadAdError;
@@ -695,4 +696,38 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         }
     }
 
+    public void setHeadlineTextView(int tagId) {
+        Log.d("NativeAdViewContainer", "setPropHeadlineTextView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setHeadlineView(view);
+    }
+
+    public void setBodyTextView(int tagId) {
+        Log.d("NativeAdViewContainer", "setBodyTextView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setBodyView(view);
+    }
+
+    public void setAdvertiserNameView(int tagId) {
+        Log.d("NativeAdViewContainer", "setAdveriserNameView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setAdvertiserView(view);
+    }
+
+    public void setIconView(int tagId) {
+        Log.d("NativeAdViewContainer", "setIconView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setIconView(view);
+    }
+
+    public void setImageView(int tagId) {
+        Log.d("NativeAdViewContainer", "setImageView");
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+        nativeAdView.setImageView(view);
+    }
 }
