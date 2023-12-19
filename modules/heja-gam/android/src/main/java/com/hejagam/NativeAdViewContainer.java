@@ -222,6 +222,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     public void reloadAd() {
+        Log.d("NativeAdViewContainer", "Reloading!!!");
         this.setupAdLoader();
 
         if (adLoader != null) {
@@ -352,6 +353,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         addView(nativeAdView);
 
         setNativeAd(nativeAd);
+        Log.d("NativeAdViewContainer", "onNativeAdLoaded");
     }
 
     @Override
@@ -666,6 +668,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setHeadlineView(view);
+        view.setTag(Constants.HEADLINE_TEXT_TAG);
     }
 
     public void setBodyTextView(int tagId) {
@@ -680,6 +683,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setAdvertiserView(view);
+        // view.setTag();
     }
 
     public void setIconView(int tagId) {

@@ -7,9 +7,11 @@
   "license": "UNLICENSED",
   "homepage": "#readme",
   "scripts": {
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "ts": "tsc -p ./ --noEmit"
   },
   "devDependencies": {
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "typescript": "^4.9.5"
   }
 }
