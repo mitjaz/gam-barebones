@@ -17,7 +17,6 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.google.android.gms.ads.AdSize;
 import com.hejagam.customClasses.CustomTargeting;
 import com.hejagam.enums.TargetingEnums;
 import com.hejagam.enums.TargetingEnums.TargetingTypes;
@@ -36,6 +35,13 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String PROP_TARGETING = "targeting";
     public static final String PROP_CORRELATOR = "correlator";
 
+    public static final String PROP_HEADLINE_TEXT_VIEW = "headlineTextView";
+    public static final String PROP_BODY_TEXT_VIEW = "bodyTextView";
+    public static final String PROP_ADVERTISER_NAME_VIEW = "advertiserNameView";
+    public static final String PROP_ICON_VIEW = "iconView";
+    public static final String PROP_IMAGE_VIEW = "imageView";
+    public static final String PROP_MEDIA_VIEW = "mediaView";
+
     public static final String EVENT_AD_LOADED = "onAdLoaded";
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
     public static final String EVENT_AD_FAILED_TO_LOAD = "onAdFailedToLoad";
@@ -45,7 +51,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String EVENT_AD_CUSTOM_CLICK = "onAdCustomClick";
     public static final String EVENT_APP_EVENT = "onAppEvent";
     public static final String EVENT_AD_RECORD_IMPRESSION = "onAdRecordImpression";
-    public static final String SET_CALL_TO_ACTION_TEXT_VIEW = "setCallToActionTextView";
+    public static final String PROP_CALL_TO_ACTION_TEXT_VIEW = "callToActionTextView";
     public static final int COMMAND_RELOAD_AD = 1;
 
     private static final String REACT_CLASS = "CTKAdManagerNative";
@@ -216,10 +222,45 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
         view.setCorrelator(correlator);
     }
 
-    @ReactProp(name = SET_CALL_TO_ACTION_TEXT_VIEW)
-    public void setCallToActionTextView(final NativeAdViewContainer view, final int tagId) {
+    @ReactProp(name = PROP_HEADLINE_TEXT_VIEW)
+    public void setPropHeadlineTextView(final NativeAdViewContainer view, final int tagId) {
+        Log.d("HEJA-GAM", "setPropHeadlineTextView");
+        view.setHeadlineTextView(tagId);
+    }
+
+    @ReactProp(name = PROP_ADVERTISER_NAME_VIEW)
+    public void setPropAdvertiserNameView(final NativeAdViewContainer view, final int tagId) {
+        Log.d("HEJA-GAM", Integer.toString(tagId));
+        view.setAdvertiserNameView(tagId);
+    }
+    @ReactProp(name = PROP_BODY_TEXT_VIEW)
+    public void setPropBodyTextView(final NativeAdViewContainer view, final int tagId) {
+        Log.d("HEJA-GAM", Integer.toString(tagId));
+        view.setBodyTextView(tagId);
+    }
+
+    @ReactProp(name = PROP_CALL_TO_ACTION_TEXT_VIEW)
+    public void setPropCallToActionTextView(final NativeAdViewContainer view, final int tagId) {
         Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setCallToActionTextView(tagId);
+    }
+
+    @ReactProp(name = PROP_IMAGE_VIEW)
+    public void setPropImageView(final NativeAdViewContainer view, final int tagId) {
+        Log.d("HEJA-GAM", Integer.toString(tagId));
+        view.setImageView(tagId);
+    }
+
+    @ReactProp(name = PROP_ICON_VIEW)
+    public void setPropIconView(final NativeAdViewContainer view, final int tagId) {
+        Log.d("HEJA-GAM", Integer.toString(tagId));
+        view.setIconView(tagId);
+    }
+
+    @ReactProp(name = PROP_MEDIA_VIEW)
+    public void setPropMediaView(final NativeAdViewContainer view, final int tagId) {
+        Log.d("HEJA-GAM", Integer.toString(tagId));
+        view.setMediaView(tagId);
     }
 
     @ReactProp(name = PROP_CUSTOM_CLICK_TEMPLATE_IDS)

@@ -91,7 +91,7 @@ export const CallToActionTextView = (props: TextProps) => {
     console.log('setNativeProp');
 
     nativeAdView?.setNativeProps({
-      setCallToActionTextView: findNodeHandle(callToActionTextRef.current),
+      callToActionTextView: findNodeHandle(callToActionTextRef.current),
     });
   }, [nativeAd]);
 
