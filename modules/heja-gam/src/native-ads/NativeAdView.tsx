@@ -1,3 +1,5 @@
+import { NativeSyntheticEvent, ViewStyle, findNodeHandle } from 'react-native';
+import { createErrorFromErrorData } from '../utils';
 import {
   ForwardedRef,
   forwardRef,
@@ -8,8 +10,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { NativeSyntheticEvent, ViewStyle, findNodeHandle } from 'react-native';
-import { createErrorFromErrorData } from '../utils';
 import { NativeAdProps, AdType, NativeAdRef } from '../types/native';
 import { AdFormatLabel, AdManagerEventSize } from '../types/events';
 import { CTKAdManagerNative, reloadAd } from './CTKAdManagerNative';

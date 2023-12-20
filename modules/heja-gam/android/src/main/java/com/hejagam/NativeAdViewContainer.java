@@ -28,6 +28,7 @@ import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerAdView;
 import com.google.android.gms.ads.admanager.AppEventListener;
 import com.google.android.gms.ads.formats.OnAdManagerAdViewLoadedListener;
+import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
@@ -237,7 +238,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     public void reloadAd() {
-        Log.d("NativeAdViewContainer", "reloadAd");
+        Log.d("NativeAdViewContainer", "Reloading!!!");
         this.setupAdLoader();
 
         if (adLoader != null) {
@@ -372,7 +373,9 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         nativeAdView.setNativeAd(ad);
         removeAllViews();
         addView(nativeAdView);
-        setNativeAd(ad);
+
+        setNativeAd(nativeAd);
+        Log.d("NativeAdViewContainer", "onNativeAdLoaded");
     }
 
     @Override
@@ -678,13 +681,18 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     public void setMediaView(int tagId) {
         Log.d("NativeAdViewContainer", String.format("setMediaView %d", tagId));
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        View view = uiManagerModule.resolveView(tagId);
+
         try {
             mediaView = nativeAdView.findViewById(tagId);
             if (mediaView != null) {
-                Log.d("NativeAdViewContainer", String.format("MediaView is not null"));
+                Log.d("NativeAdViewContainer", "MediaView is not null");
                 nativeAd.getMediaContent().getVideoController().setVideoLifecycleCallbacks(mediaView.videoLifecycleCallbacks);
                 nativeAdView.setMediaView(nativeAdView.findViewById(tagId));
                 mediaView.requestLayout();
+            } else {
+                Log.d("NativeAdViewContainer", "MediaView is null");
             }
         } catch (Exception e) {
             Log.e("NativeAdViewContainer", e.getLocalizedMessage());
