@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     overflow: 'hidden',
+    height: 100
   },
   ctaText: {
     fontSize: 14,

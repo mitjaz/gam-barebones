@@ -682,17 +682,14 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     public void setMediaView(int tagId) {
         Log.d("NativeAdViewContainer", String.format("setMediaView %d", tagId));
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
-        View view = uiManagerModule.resolveView(tagId);
 
         try {
-            mediaView = nativeAdView.findViewById(tagId);
+            mediaView = (RNAdManagerMediaView) uiManagerModule.resolveView(tagId);
             if (mediaView != null) {
-                Log.d("NativeAdViewContainer", "MediaView is not null");
                 nativeAd.getMediaContent().getVideoController().setVideoLifecycleCallbacks(mediaView.videoLifecycleCallbacks);
                 nativeAdView.setMediaView(nativeAdView.findViewById(tagId));
                 mediaView.requestLayout();
-            } else {
-                Log.d("NativeAdViewContainer", "MediaView is null");
+                setNativeAd();
             }
         } catch (Exception e) {
             Log.e("NativeAdViewContainer", e.getLocalizedMessage());
