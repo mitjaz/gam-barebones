@@ -9,6 +9,7 @@ import {
 import NativeFeedAd from './NativeFeedAd';
 import {Text, TouchableOpacity} from 'react-native';
 import {reloadAd} from 'react-native-heja-gam/src/native-ads/CTKAdManagerNative';
+import {adHasIcon, getAdAspectRatio} from './utils';
 
 type Props = {
   adsManager: NativeAdsManager;
@@ -42,7 +43,10 @@ export const GamAd = ({
         ref={adRef}
         adsManager={adsManager}
         renderNativeAd={(ad: AdType) => (
-          <NativeFeedAd adHasIcon={true} adAspectRatio={1.5} />
+          <NativeFeedAd
+            adHasIcon={adHasIcon(ad)}
+            adAspectRatio={getAdAspectRatio(ad)}
+          />
         )}
         targeting={{customTargeting}}
         validAdTypes={validAdTypes}
