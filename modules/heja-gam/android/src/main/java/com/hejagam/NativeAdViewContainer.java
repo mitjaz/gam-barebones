@@ -349,11 +349,20 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     @Override
     public void onNativeAdLoaded(NativeAd nativeAd) {
         nativeAdView.setNativeAd(nativeAd);
-        removeAllViews();
-        addView(nativeAdView);
+
+        boolean nativeAdViewFound = false;
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i) instanceof NativeAdView) {
+                nativeAdViewFound = true;
+                break;
+            }
+        }
+
+        if (!nativeAdViewFound) {
+            addView(nativeAdView);
+        }
 
         setNativeAd(nativeAd);
-        Log.d("NativeAdViewContainer", "onNativeAdLoaded");
     }
 
     @Override
@@ -668,7 +677,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setHeadlineView(view);
-        view.setTag(Constants.HEADLINE_TEXT_TAG);
     }
 
     public void setBodyTextView(int tagId) {
@@ -683,7 +691,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setAdvertiserView(view);
-        // view.setTag();
     }
 
     public void setIconView(int tagId) {

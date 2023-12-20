@@ -53,11 +53,8 @@ export const GamAd = ({
         }}
         onAdFailedToLoad={error => {
           console.log(error);
-          Bugsnag.notify(error);
         }}
-        onAdPress={() => {
-          setAllowDeepLinks();
-        }}
+        onAdPress={() => {}}
         validAdSizes={validAdSizes}
         style={{width: '100%'}}
       />
