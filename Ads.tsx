@@ -10,6 +10,10 @@ const adManagerWithMedia = new NativeAdsManager('/256416529/H_MULTI_FEED', [
   SIMULATOR_ID,
 ]);
 
+export const postAdsManager = new NativeAdsManager('/256416529/H_MULTI_POST', [
+  SIMULATOR_ID,
+]);
+
 export default function Ads() {
   return (
     <View style={{flex: 1}}>
@@ -19,7 +23,7 @@ export default function Ads() {
         </Text>
       </View>
       <GamAd
-        adsManager={adManagerWithMedia}
+        adsManager={postAdsManager}
         renderNativeAd={ad => {
           console.log('ad', JSON.stringify(ad, null, 2));
 
