@@ -20,6 +20,7 @@ import com.facebook.react.views.view.ReactViewGroup;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
@@ -77,6 +78,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     String correlator;
     List<String> customClickTemplateIds;
     int callToActionTextViewTagId;
+    AdSize[] validAdSizes;
+    AdSize adSize;
 
     /**
      * Creates new NativeAdView instance and retrieves event emitter
@@ -96,8 +99,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     private boolean isFluid() {
-      return true;
-      // return AdSize.FLUID.equals(this.adSize);
+       return AdSize.FLUID.equals(this.adSize);
     }
 
     public void loadAd(RNAdManagerNativeManager.AdsManagerProperties adsManagerProperties) {
@@ -121,23 +123,23 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             .setAdChoicesPlacement(NativeAdOptions.ADCHOICES_TOP_LEFT)
             .build();
 
-        // ArrayList<AdSize> adSizes = new ArrayList<AdSize>();
-        // if (adSize != null) {
-        //     adSizes.add(adSize);
-        // }
-        // if (validAdSizes != null) {
-        //     for (int i = 0; i < validAdSizes.length; i++) {
-        //         if (!adSizes.contains(validAdSizes[i])) {
-        //             adSizes.add(validAdSizes[i]);
-        //         }
-        //     }
-        // }
+         ArrayList<AdSize> adSizes = new ArrayList<AdSize>();
+         if (adSize != null) {
+             adSizes.add(adSize);
+         }
+         if (validAdSizes != null) {
+             for (int i = 0; i < validAdSizes.length; i++) {
+                 if (!adSizes.contains(validAdSizes[i])) {
+                     adSizes.add(validAdSizes[i]);
+                 }
+             }
+         }
 
-        // if (adSizes.size() == 0) {
-        //     adSizes.add(AdSize.BANNER);
-        // }
+         if (adSizes.size() == 0) {
+             adSizes.add(AdSize.BANNER);
+         }
 
-        // AdSize[] adSizesArray = adSizes.toArray(new AdSize[adSizes.size()]);
+         AdSize[] adSizesArray = adSizes.toArray(new AdSize[adSizes.size()]);
 
         List<String> validAdTypesList = Arrays.asList(validAdTypes);
 
@@ -147,10 +149,10 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             Log.e("validAdTypes", AD_TYPE_NATIVE);
             builder.forNativeAd(NativeAdViewContainer.this);
         }
-        // if (adSizesArray.length > 0 && validAdTypesList.contains(AD_TYPE_BANNER)) {
-        //     Log.e("validAdTypes", AD_TYPE_BANNER);
-        //     builder.forAdManagerAdView(NativeAdViewContainer.this, adSizesArray);
-        // }
+         if (adSizesArray.length > 0 && validAdTypesList.contains(AD_TYPE_BANNER)) {
+             Log.e("validAdTypes", AD_TYPE_BANNER);
+             builder.forAdManagerAdView(NativeAdViewContainer.this, adSizesArray);
+         }
         if (customTemplateIds != null && customTemplateIds.length > 0 && validAdTypesList.contains(AD_TYPE_TEMPLATE)) {
             Log.e("validAdTypes", AD_TYPE_TEMPLATE);
             for (int i = 0; i < customTemplateIds.length; i++) {
@@ -370,6 +372,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         this.adManagerAdView = adView;
         removeAllViews();
         this.addView(adView);
+
         if (adView == null) {
             WritableMap event = Arguments.createMap();
             sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, event);
@@ -578,12 +581,12 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         this.customTemplateIds = customTemplateIds;
     }
 
-    public void setAdSize() {
-      // this.adSize = adSize;
+    public void setAdSize(AdSize adSize) {
+       this.adSize = adSize;
     }
 
-    public void setValidAdSizes() {
-        //this.validAdSizes = adSizes;
+    public void setValidAdSizes(AdSize[] adSizes) {
+        this.validAdSizes = adSizes;
     }
 
     public void setValidAdTypes(String[] adTypes) {

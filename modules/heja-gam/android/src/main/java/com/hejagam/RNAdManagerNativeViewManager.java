@@ -17,9 +17,11 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.gms.ads.AdSize;
 import com.hejagam.customClasses.CustomTargeting;
 import com.hejagam.enums.TargetingEnums;
 import com.hejagam.enums.TargetingEnums.TargetingTypes;
+import com.hejagam.utils.AdSizeUtil;
 import com.hejagam.utils.Targeting;
 
 import java.util.ArrayList;
@@ -131,8 +133,9 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
 
     @ReactProp(name = PROP_AD_SIZE)
     public void setPropAdSize(final NativeAdViewContainer view, final String sizeString) {
-        // AdSize adSize = AdSizeUtil.getAdSizeFromString(sizeString);
-        // view.setAdSize(adSize);
+        Log.d("AdSize", sizeString);
+         AdSize adSize = AdSizeUtil.getAdSizeFromString(sizeString);
+         view.setAdSize(adSize);
     }
 
     @ReactProp(name = PROP_VALID_AD_SIZES)
@@ -140,15 +143,14 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
         ReadableNativeArray nativeArray = (ReadableNativeArray) adSizeStrings;
         ArrayList<Object> list = nativeArray.toArrayList();
         String[] adSizeStringsArray = list.toArray(new String[list.size()]);
-        /*
         AdSize[] adSizes = new AdSize[list.size()];
 
         for (int i = 0; i < adSizeStringsArray.length; i++) {
             String adSizeString = adSizeStringsArray[i];
             adSizes[i] = AdSizeUtil.getAdSizeFromString(adSizeString);
+            Log.d("AdSize1", adSizeString);
         }
         view.setValidAdSizes(adSizes);
-        */
     }
 
     @ReactProp(name = PROP_VALID_AD_TYPES)

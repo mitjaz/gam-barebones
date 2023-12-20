@@ -8,6 +8,8 @@ import {
 } from 'react-native-heja-gam';
 import {parseGamAdHeadline} from './utils';
 import {NativeAdInfo} from './NativeAdInfo';
+import {ImageView} from 'react-native-heja-gam/src';
+import {NativeAdMediaView} from './NativeAdMediaView';
 
 type Props = {
   adAspectRatio?: number;
@@ -44,7 +46,8 @@ export default function NativeFeedAd({
         </View>
       </View>
       <BodyTextView style={{marginTop: 8}} />
-      <MediaView adAspectRatio={adAspectRatio} style={styles.imageWrapper} />
+      <NativeAdMediaView />
+      <ImageView style={{height: 300}} />
       <View style={styles.cta}>
         <CallToActionTextView style={styles.ctaText} />
         <View style={styles.ctaIcon} pointerEvents="none">
