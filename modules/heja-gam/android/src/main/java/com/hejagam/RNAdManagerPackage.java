@@ -19,7 +19,8 @@ public class RNAdManagerPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.asList(
-            new RNAdManagerNativeViewManager(reactContext)
+            new RNAdManagerNativeViewManager(reactContext),
+                new RNAdMediaViewManager()
         );
     }
 }

@@ -14,6 +14,11 @@ export const NativeAdMediaView = ({style, adAspectRatio}: Props) => {
   // This is to prevent square or portrait images
   const maxAdHeight = adWidth ? adWidth / 1.49 : undefined;
   const adHeight = adWidth && adAspectRatio ? adWidth / adAspectRatio : 0;
+  console.log({
+    adHeight,
+    adWidth,
+    adAspectRatio,
+  });
 
   return (
     <View
@@ -26,6 +31,8 @@ export const NativeAdMediaView = ({style, adAspectRatio}: Props) => {
             maxHeight: maxAdHeight,
             width: adWidth,
             height: adHeight,
+            minHeight: 100,
+            backgroundColor: '#ccc',
           }}
         />
       </View>

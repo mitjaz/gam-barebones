@@ -29,6 +29,7 @@ import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerAdView;
 import com.google.android.gms.ads.admanager.AppEventListener;
 import com.google.android.gms.ads.formats.OnAdManagerAdViewLoadedListener;
+import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
@@ -545,6 +546,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             for (NativeAd.Image image : nativeAd.getImages()) {
                 WritableMap imageMap = Arguments.createMap();
                 imageMap.putString("uri", image.getUri().toString());
+                imageMap.putInt("width", image.getDrawable().getIntrinsicWidth());
+                imageMap.putInt("height", image.getDrawable().getIntrinsicHeight());
                 imageMap.putDouble("scale", image.getScale());
                 images.pushMap(imageMap);
             }
@@ -708,8 +711,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     public void setMediaView(int tagId) {
         Log.d("NativeAdViewContainer", "setMediaView");
-//        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
-//        View view = uiManagerModule.resolveView(tagId);
-//        nativeAdView.setMediaView(view);
+        UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        RNAdMediaView mediaView = (RNAdMediaView) uiManagerModule.resolveView(tagId);
+        nativeAdView.setMediaView(mediaView);
     }
 }

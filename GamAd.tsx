@@ -22,7 +22,7 @@ export const GamAd = ({
   adsManager,
   renderNativeAd,
   validAdSizes = ['300x250', '320x50'],
-  validAdTypes = ['banner', 'native', 'template'],
+  validAdTypes = ['native', 'template'],
 }: Props) => {
   const [adResponse, setAdResponse] = useState<AdType>();
   const adRef = useRef<NativeAdRef>(null);
