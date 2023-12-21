@@ -150,16 +150,18 @@ export const MediaView = (props: any) => {
   const { nativeAd, nativeAdView } = useContext(NativeAdViewContext);
   const mediaRef = useRef(null);
   let nodeHandle: any = null;
+
   useEffect(() => {
     if (!nativeAd?.images || !mediaRef.current) {
       return;
     }
 
     nodeHandle = findNodeHandle(mediaRef.current);
+    console.log("nativeAdView", !!nativeAdView);
     nativeAdView?.setNativeProps({
       mediaView: nodeHandle,
     });
-  }, [nativeAd, props.width]);
+  }, [nativeAd, nativeAdView]);
 
   useEffect(() => {
     return () => {
@@ -212,11 +214,6 @@ export const MediaView = (props: any) => {
   const onVideoMute = (event: any) => {
     props.onVideoMute && props.onVideoMute(event.nativeEvent?.muted);
   };
-
-  console.log('props', JSON.stringify(props, null, 2));
-  if (!props.width) {
-    return null;
-  }
 
   return (
     <CTKAdManagerMediaView

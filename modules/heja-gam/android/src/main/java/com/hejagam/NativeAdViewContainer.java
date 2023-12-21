@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
@@ -77,6 +78,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     String correlator;
     List<String> customClickTemplateIds;
     int callToActionTextViewTagId;
+
+    NativeAd nativeAd;
 
     /**
      * Creates new NativeAdView instance and retrieves event emitter
@@ -221,7 +224,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     public void reloadAd() {
-        Log.d("NativeAdViewContainer", "Reloading!!!");
+        Log.d("NativeAdViewContainer", "Reloading ad");
         this.setupAdLoader();
 
         if (adLoader != null) {
@@ -304,7 +307,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     public void registerViewsForInteraction(List<View> clickableViews) {
-        Log.d("NativeAdViewContainer", "registerViewsForInteraction");
         if (nativeCustomTemplateAd != null && nativeCustomTemplateAdClickableAsset != null) {
             try {
                 for (View view : clickableViews) {
@@ -347,6 +349,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     @Override
     public void onNativeAdLoaded(NativeAd nativeAd) {
+        this.nativeAd = nativeAd;
         nativeAdView.setNativeAd(nativeAd);
 
         boolean nativeAdViewFound = false;
@@ -360,7 +363,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         if (!nativeAdViewFound) {
             addView(nativeAdView);
         }
-
         setNativeAd(nativeAd);
     }
 
@@ -627,7 +629,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     public void setCallToActionTextView(int tagId) {
-        Log.d("NativeAdViewContainer", "setCallToActionTextView");
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setCallToActionView(view);
@@ -672,47 +673,54 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         if (this.adLoader != null) {
             this.adLoader = null;
         }
+        if (this.nativeAd != null) {
+            this.nativeAd.destroy();
+        }
     }
 
     public void setHeadlineTextView(int tagId) {
-        Log.d("NativeAdViewContainer", "setPropHeadlineTextView");
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setHeadlineView(view);
     }
 
     public void setBodyTextView(int tagId) {
-        Log.d("NativeAdViewContainer", "setBodyTextView");
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setBodyView(view);
     }
 
     public void setAdvertiserNameView(int tagId) {
-        Log.d("NativeAdViewContainer", "setAdveriserNameView");
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setAdvertiserView(view);
     }
 
     public void setIconView(int tagId) {
-        Log.d("NativeAdViewContainer", "setIconView");
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setIconView(view);
     }
 
     public void setImageView(int tagId) {
-        Log.d("NativeAdViewContainer", "setImageView");
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         View view = uiManagerModule.resolveView(tagId);
         nativeAdView.setImageView(view);
     }
 
     public void setMediaView(int tagId) {
-        Log.d("NativeAdViewContainer", "setMediaView");
+        Log.d("NativeAdViewContainer",String.format("Setting mediaView from React Props."));
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         RNAdMediaView mediaView = (RNAdMediaView) uiManagerModule.resolveView(tagId);
+
+        if (mediaView.getChildCount() < 1) {
+            ImageView imageView = new ImageView(context);
+            imageView.setImageDrawable(nativeAd.getMediaContent().getMainImage());
+            mediaView.addView(imageView);
+        }
+        for (int i = 0; i < mediaView.getChildCount(); i++) {
+            Log.d("NativeAdViewContainer", String.format("MediaView child #%d: %s", i+1, mediaView.getChildAt(i).toString()));
+        }
         nativeAdView.setMediaView(mediaView);
     }
 }
