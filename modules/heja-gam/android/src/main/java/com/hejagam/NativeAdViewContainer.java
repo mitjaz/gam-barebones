@@ -359,7 +359,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             setNativeAd();
         }
 
-        sendNativeAdToJs(nativeAd);
+        sendNativeAdToJs(ad);
     }
 
     public void setNativeAd() {
@@ -728,8 +728,11 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         RNAdMediaView mediaView = (RNAdMediaView) uiManagerModule.resolveView(tagId);
         this.mediaView = mediaView;
+        boolean mediaViewWasNull = nativeAdView.getMediaView() == null;
         nativeAdView.setMediaView(mediaView);
-        mediaView.requestLayout();
-        setNativeAd();
+
+        if (mediaViewWasNull) {
+            setNativeAd();
+        }
     }
 }
