@@ -14,6 +14,16 @@ export const postAdsManager = new NativeAdsManager('/256416529/H_MULTI_POST', [
   SIMULATOR_ID,
 ]);
 
+export const videoAdManager = new NativeAdsManager(
+  'ca-app-pub-3940256099942544/1044960115',
+  [SIMULATOR_ID],
+);
+
+export const bannerAdManager = new NativeAdsManager(
+  'ca-app-pub-3940256099942544/9214589741',
+  [SIMULATOR_ID],
+);
+
 export default function Ads() {
   return (
     <View style={{flex: 1}}>

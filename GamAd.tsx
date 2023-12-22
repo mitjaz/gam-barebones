@@ -7,7 +7,7 @@ import {
   NativeAdsManager,
 } from 'react-native-heja-gam';
 import NativeFeedAd from './NativeFeedAd';
-import {Text, TouchableOpacity} from 'react-native';
+import {Dimensions, Text, TouchableOpacity} from 'react-native';
 import {reloadAd} from 'react-native-heja-gam/src/native-ads/CTKAdManagerNative';
 import {adHasIcon, getAdAspectRatio} from './utils';
 
@@ -18,11 +18,19 @@ type Props = {
   validAdTypes?: NativeAdProps['validAdTypes'];
 };
 
+const maxBannerAdHeight = 250;
+const maxBannerAdWidth = Math.floor(Dimensions.get('window').width);
+
+console.log(
+  '`${maxBannerAdWidth}x${maxBannerAdHeight}`',
+  `${maxBannerAdWidth}x${maxBannerAdHeight}`,
+);
+
 export const GamAd = ({
   adsManager,
   renderNativeAd,
   validAdSizes = ['300x250', '320x50'],
-  validAdTypes = ['native', 'template'],
+  validAdTypes = ['banner'],
 }: Props) => {
   const [adResponse, setAdResponse] = useState<AdType>();
   const adRef = useRef<NativeAdRef>(null);
@@ -61,6 +69,7 @@ export const GamAd = ({
         onAdPress={() => {}}
         validAdSizes={validAdSizes}
         style={{width: '100%'}}
+        adSize={`${maxBannerAdWidth}x${maxBannerAdHeight}`}
       />
       <TouchableOpacity
         style={{backgroundColor: 'black', padding: 8, margin: 8}}
