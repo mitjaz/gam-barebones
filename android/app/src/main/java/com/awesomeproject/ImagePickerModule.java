@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.awesomeproject2;
 
 import android.app.Activity;
 import android.content.Intent;

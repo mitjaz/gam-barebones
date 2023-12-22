@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.awesomeproject2;
 
 import static android.os.Looper.*;
 
