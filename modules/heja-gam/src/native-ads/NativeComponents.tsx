@@ -213,11 +213,6 @@ export const MediaView = (props: any) => {
     props.onVideoMute && props.onVideoMute(event.nativeEvent?.muted);
   };
 
-  console.log('props', JSON.stringify(props, null, 2));
-  if (!props.width) {
-    return null;
-  }
-
   return (
     <CTKAdManagerMediaView
       {...props}

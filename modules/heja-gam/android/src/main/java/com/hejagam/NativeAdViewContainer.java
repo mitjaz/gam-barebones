@@ -78,6 +78,9 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     List<String> customClickTemplateIds;
     int callToActionTextViewTagId;
 
+    NativeAd nativeAd;
+    RNAdMediaView mediaView;
+
     /**
      * Creates new NativeAdView instance and retrieves event emitter
      *
@@ -346,23 +349,34 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     }
 
     @Override
-    public void onNativeAdLoaded(NativeAd nativeAd) {
-        nativeAdView.setNativeAd(nativeAd);
-
-        boolean nativeAdViewFound = false;
-        for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) instanceof NativeAdView) {
-                nativeAdViewFound = true;
-                break;
-            }
+    public void onNativeAdLoaded(NativeAd ad) {
+        if (nativeAd != null) {
+            nativeAd.destroy();
         }
 
-        if (!nativeAdViewFound) {
-            addView(nativeAdView);
+        if (ad != null) {
+            nativeAd = ad;
+            setNativeAd();
         }
 
-        setNativeAd(nativeAd);
+        sendNativeAdToJs(nativeAd);
     }
+
+    public void setNativeAd() {
+        if (nativeAdView != null && nativeAd != null) {
+            nativeAdView.setNativeAd(nativeAd);
+
+            if (mediaView != null && nativeAdView.getMediaView() != null) {
+                nativeAdView.getMediaView().setMediaContent(nativeAd.getMediaContent());
+                if (nativeAd.getMediaContent().hasVideoContent()) {
+                    mediaView.setVideoController(nativeAd.getMediaContent().getVideoController());
+                    mediaView.setMedia(nativeAd.getMediaContent());
+                }
+            }
+
+        }
+    }
+
 
     @Override
     public void onAdManagerAdViewLoaded(AdManagerAdView adView) {
@@ -437,7 +451,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         this.nativeCustomTemplateAd = nativeCustomTemplateAd;
         removeAllViews();
 
-        setNativeAd(nativeCustomTemplateAd);
+        sendNativeAdToJs(nativeCustomTemplateAd);
     }
 
     /**
@@ -446,7 +460,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
      *
      * @param nativeCustomTemplateAd
      */
-    private void setNativeAd(NativeCustomFormatAd nativeCustomTemplateAd) {
+    private void sendNativeAdToJs(NativeCustomFormatAd nativeCustomTemplateAd) {
         if (nativeCustomTemplateAd == null) {
             WritableMap event = Arguments.createMap();
             sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, event);
@@ -477,7 +491,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         nativeCustomTemplateAd.recordImpression();
     }
 
-    private void setNativeAd(NativeAd nativeAd) {
+    private void sendNativeAdToJs(NativeAd nativeAd) {
         if (nativeAd == null) {
             WritableMap event = Arguments.createMap();
             sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, event);
@@ -713,6 +727,9 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         Log.d("NativeAdViewContainer", "setMediaView");
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         RNAdMediaView mediaView = (RNAdMediaView) uiManagerModule.resolveView(tagId);
+        this.mediaView = mediaView;
         nativeAdView.setMediaView(mediaView);
+        mediaView.requestLayout();
+        setNativeAd();
     }
 }
