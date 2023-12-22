@@ -1,4 +1,9 @@
-import { NativeSyntheticEvent, ViewStyle, findNodeHandle } from 'react-native';
+import {
+  NativeSyntheticEvent,
+  View,
+  ViewStyle,
+  findNodeHandle,
+} from 'react-native';
 import { createErrorFromErrorData } from '../utils';
 import {
   ForwardedRef,
@@ -18,6 +23,7 @@ import {
   NativeAdViewProvider,
   NativeAdViewType,
 } from './NativeAdViewProvider';
+import { MEDIA_VIEW_REF } from './NativeComponents';
 
 export const NativeAdView = forwardRef(
   (props: NativeAdProps, ref: ForwardedRef<NativeAdRef>) => {
@@ -48,7 +54,8 @@ export const NativeAdView = forwardRef(
     const [nativeStyle, setNativeStyle] = useState<ViewStyle>({});
     const [adResponse, setAdResponse] = useState<AdType>();
 
-    const { setNativeAd, setNativeAdView } = useContext(NativeAdViewContext);
+    const { setNativeAd, setNativeAdView, mediaViewRef } =
+      useContext(NativeAdViewContext);
 
     const reload = () => {
       const nodeHandle = findNodeHandle(nativeAdViewRef.current);
@@ -124,8 +131,11 @@ export const NativeAdView = forwardRef(
         targeting={targeting}
         customClickTemplateIds={customClickTemplateIds}
         adsManager={adsManager.toJSON()}
+        mediaView={mediaViewRef || undefined}
       >
-        {canRenderNativeAd && renderNativeAd(adResponse)}
+        <View style={{ display: canRenderNativeAd ? 'flex' : 'none' }}>
+          {renderNativeAd(adResponse)}
+        </View>
       </CTKAdManagerNative>
     );
   }

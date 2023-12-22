@@ -713,14 +713,6 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         UIManagerModule uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
         RNAdMediaView mediaView = (RNAdMediaView) uiManagerModule.resolveView(tagId);
 
-        if (mediaView.getChildCount() < 1) {
-            ImageView imageView = new ImageView(context);
-            imageView.setImageDrawable(nativeAd.getMediaContent().getMainImage());
-            mediaView.addView(imageView);
-        }
-        for (int i = 0; i < mediaView.getChildCount(); i++) {
-            Log.d("NativeAdViewContainer", String.format("MediaView child #%d: %s", i+1, mediaView.getChildAt(i).toString()));
-        }
         nativeAdView.setMediaView(mediaView);
     }
 }

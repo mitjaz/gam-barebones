@@ -25,6 +25,7 @@ export const NativeAdViewProvider: React.FC<{ children: React.ReactNode }> = (
 ) => {
   const [nativeAd, setNativeAd] = useState(null);
   const [nativeAdView, setNativeAdView] = useState(null);
+  const [mediaViewRef, setMediaViewRef] = useState(null);
 
   return (
     <NativeAdViewContext.Provider
@@ -34,6 +35,8 @@ export const NativeAdViewProvider: React.FC<{ children: React.ReactNode }> = (
           nativeAdView,
           setNativeAd,
           setNativeAdView,
+          mediaViewRef,
+          setMediaViewRef,
         } as any
       }
     >

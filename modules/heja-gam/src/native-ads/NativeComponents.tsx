@@ -11,6 +11,8 @@ import type { ImageProps, TextProps } from 'react-native';
 import { NativeAdViewContext } from './NativeAdViewProvider';
 import { CTKAdManagerMediaView, getProgress } from './CTKAdManagerMediaView';
 
+export let MEDIA_VIEW_REF = null;
+
 export const HeadlineTextView = ({
   parseHeadline,
   ...props
@@ -147,21 +149,28 @@ export const IconView = (props: Omit<ImageProps, 'source'>) => {
 let timers: any = {};
 
 export const MediaView = (props: any) => {
-  const { nativeAd, nativeAdView } = useContext(NativeAdViewContext);
+  const { nativeAd, nativeAdView, setMediaViewRef } =
+    useContext(NativeAdViewContext);
   const mediaRef = useRef(null);
   let nodeHandle: any = null;
+  console.log('rendering mediaView');
 
   useEffect(() => {
-    if (!nativeAd?.images || !mediaRef.current) {
+    console.log('mediaRef', mediaRef.current);
+
+    if (!mediaRef.current) {
       return;
     }
 
     nodeHandle = findNodeHandle(mediaRef.current);
-    console.log("nativeAdView", !!nativeAdView);
-    nativeAdView?.setNativeProps({
-      mediaView: nodeHandle,
-    });
-  }, [nativeAd, nativeAdView]);
+    if (nodeHandle) {
+      setMediaViewRef(nodeHandle);
+    }
+
+    // nativeAdView?.setNativeProps({
+    //   mediaView: nodeHandle,
+    // });
+  }, [nativeAd]);
 
   useEffect(() => {
     return () => {
