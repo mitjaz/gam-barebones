@@ -17,7 +17,6 @@ public class RNAdMediaView extends MediaView {
     private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
-            Log.d("RNAdMediaView", getWidth() + "w " + getHeight() + "h " + getLeft() + "l " + getTop() + "t " + getRight() + "r " + getBottom() + "b");
             measure(
                     MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                     MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
@@ -119,7 +118,6 @@ public class RNAdMediaView extends MediaView {
 
     @Override
     public void requestLayout() {
-        Log.d("RNAdMediaView", "requestLayout");
         super.requestLayout();
         post(measureAndLayout);
     }

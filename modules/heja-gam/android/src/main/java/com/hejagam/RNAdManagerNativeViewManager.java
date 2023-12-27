@@ -133,7 +133,6 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
 
     @ReactProp(name = PROP_AD_SIZE)
     public void setPropAdSize(final NativeAdViewContainer view, final String sizeString) {
-        Log.d("AdSize", sizeString);
         AdSize adSize = AdSizeUtil.getAdSizeFromString(sizeString);
         view.setAdSize(adSize);
     }
@@ -148,7 +147,6 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
         for (int i = 0; i < adSizeStringsArray.length; i++) {
             String adSizeString = adSizeStringsArray[i];
             adSizes[i] = AdSizeUtil.getAdSizeFromString(adSizeString);
-            Log.d("AdSize1", adSizeString);
         }
         view.setValidAdSizes(adSizes);
     }
@@ -226,43 +224,36 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
 
     @ReactProp(name = PROP_HEADLINE_TEXT_VIEW)
     public void setPropHeadlineTextView(final NativeAdViewContainer view, final int tagId) {
-        Log.d("HEJA-GAM", "setPropHeadlineTextView");
         view.setHeadlineTextView(tagId);
     }
 
     @ReactProp(name = PROP_ADVERTISER_NAME_VIEW)
     public void setPropAdvertiserNameView(final NativeAdViewContainer view, final int tagId) {
-        Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setAdvertiserNameView(tagId);
     }
 
     @ReactProp(name = PROP_BODY_TEXT_VIEW)
     public void setPropBodyTextView(final NativeAdViewContainer view, final int tagId) {
-        Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setBodyTextView(tagId);
     }
 
     @ReactProp(name = PROP_CALL_TO_ACTION_TEXT_VIEW)
     public void setPropCallToActionTextView(final NativeAdViewContainer view, final int tagId) {
-        Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setCallToActionTextView(tagId);
     }
 
     @ReactProp(name = PROP_IMAGE_VIEW)
     public void setPropImageView(final NativeAdViewContainer view, final int tagId) {
-        Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setImageView(tagId);
     }
 
     @ReactProp(name = PROP_ICON_VIEW)
     public void setPropIconView(final NativeAdViewContainer view, final int tagId) {
-        Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setIconView(tagId);
     }
 
     @ReactProp(name = PROP_MEDIA_VIEW)
     public void setPropMediaView(final NativeAdViewContainer view, final int tagId) {
-        Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setMediaView(tagId);
     }
 

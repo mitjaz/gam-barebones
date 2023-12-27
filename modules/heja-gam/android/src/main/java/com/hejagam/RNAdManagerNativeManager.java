@@ -68,44 +68,6 @@ public class RNAdManagerNativeManager extends ReactContextBaseJavaModule {
         return propertiesMap.get(adUnitID);
     }
 
-    @ReactMethod
-    public void registerViewsForInteraction(final int adTag,
-                                            final ReadableArray clickableViewsTags,
-                                            final Promise promise) {
-        Log.d("RNAdManagerNativeManager", "registerViewsForInteraction");
-        getReactApplicationContext().getNativeModule(UIManagerModule.class).addUIBlock(new UIBlock() {
-            @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                try {
-                    NativeAdViewContainer nativeAdViewContainer = null;
-
-                    if (adTag != -1) {
-                        nativeAdViewContainer = (NativeAdViewContainer) nativeViewHierarchyManager.resolveView(adTag);
-                    }
-
-                    List<View> clickableViews = new ArrayList<>();
-
-                    for (int i = 0; i < clickableViewsTags.size(); ++i) {
-                        View view = nativeViewHierarchyManager.resolveView(clickableViewsTags.getInt(i));
-                        clickableViews.add(view);
-                    }
-
-                    nativeAdViewContainer.registerViewsForInteraction(clickableViews);
-                    promise.resolve(null);
-
-                } catch (ClassCastException e) {
-                    promise.reject("E_CANNOT_CAST", e);
-                } catch (IllegalViewOperationException e) {
-                    promise.reject("E_INVALID_TAG_ERROR", e);
-                } catch (NullPointerException e) {
-                    promise.reject("E_NO_NATIVE_AD_VIEW", e);
-                } catch (Exception e) {
-                    promise.reject("E_AD_REGISTER_ERROR", e);
-                }
-            }
-        });
-    }
-
     // Required for rn built in EventEmitter Calls.
     @ReactMethod
     public void addListener(String eventName) {
