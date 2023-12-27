@@ -1,4 +1,5 @@
 package com.hejagam.utils;
+
 import com.google.android.gms.ads.AdSize;
 
 public class AdSizeUtil {
@@ -6,7 +7,13 @@ public class AdSizeUtil {
         if (adSize.contains("x")) {
             String[] splitAdSizes = adSize.split("x");
             if (splitAdSizes.length == 2) {
-                return new AdSize(Integer.parseInt(splitAdSizes[0]), Integer.parseInt(splitAdSizes[1]));
+                double width = Double.parseDouble(splitAdSizes[0]);
+                double height = Double.parseDouble(splitAdSizes[1]);
+
+                int roundedWidth = (int) Math.floor(width);
+                int roundedHeight = (int) Math.floor(height);
+
+                return new AdSize(roundedWidth, roundedHeight);
             }
         }
 
