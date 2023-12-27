@@ -1,7 +1,7 @@
 package com.hejagam;
 
-import android.view.View;
 import android.util.Log;
+import android.view.View;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -106,6 +106,17 @@ public class RNAdManagerNativeManager extends ReactContextBaseJavaModule {
         });
     }
 
+    // Required for rn built in EventEmitter Calls.
+    @ReactMethod
+    public void addListener(String eventName) {
+
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+
+    }
+
     public static class AdsManagerProperties {
         String[] testDevices;
         String adUnitID;
@@ -125,16 +136,5 @@ public class RNAdManagerNativeManager extends ReactContextBaseJavaModule {
         public void setAdUnitID(String adUnitID) {
             this.adUnitID = adUnitID;
         }
-    }
-
-    // Required for rn built in EventEmitter Calls.
-    @ReactMethod
-    public void addListener(String eventName) {
-
-    }
-
-    @ReactMethod
-    public void removeListeners(Integer count) {
-
     }
 }

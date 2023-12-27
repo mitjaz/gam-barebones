@@ -107,15 +107,15 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         MapBuilder.Builder<String, Object> builder = MapBuilder.builder();
         String[] events = {
-            EVENT_AD_LOADED,
-            EVENT_SIZE_CHANGE,
-            EVENT_AD_FAILED_TO_LOAD,
-            EVENT_AD_OPENED,
-            EVENT_AD_CLOSED,
-            EVENT_AD_CLICKED,
-            EVENT_AD_CUSTOM_CLICK,
-            EVENT_APP_EVENT,
-            EVENT_AD_RECORD_IMPRESSION
+                EVENT_AD_LOADED,
+                EVENT_SIZE_CHANGE,
+                EVENT_AD_FAILED_TO_LOAD,
+                EVENT_AD_OPENED,
+                EVENT_AD_CLOSED,
+                EVENT_AD_CLICKED,
+                EVENT_AD_CUSTOM_CLICK,
+                EVENT_APP_EVENT,
+                EVENT_AD_RECORD_IMPRESSION
         };
         for (int i = 0; i < events.length; i++) {
             builder.put(events[i], MapBuilder.of("registrationName", events[i]));
@@ -134,8 +134,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     @ReactProp(name = PROP_AD_SIZE)
     public void setPropAdSize(final NativeAdViewContainer view, final String sizeString) {
         Log.d("AdSize", sizeString);
-         AdSize adSize = AdSizeUtil.getAdSizeFromString(sizeString);
-         view.setAdSize(adSize);
+        AdSize adSize = AdSizeUtil.getAdSizeFromString(sizeString);
+        view.setAdSize(adSize);
     }
 
     @ReactProp(name = PROP_VALID_AD_SIZES)
@@ -169,8 +169,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
 
         if (targetings.hasNextKey()) {
             for (
-                ReadableMapKeySetIterator it = targetingObjects.keySetIterator();
-                it.hasNextKey();
+                    ReadableMapKeySetIterator it = targetingObjects.keySetIterator();
+                    it.hasNextKey();
             ) {
                 String targetingType = it.nextKey();
 
@@ -235,6 +235,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
         Log.d("HEJA-GAM", Integer.toString(tagId));
         view.setAdvertiserNameView(tagId);
     }
+
     @ReactProp(name = PROP_BODY_TEXT_VIEW)
     public void setPropBodyTextView(final NativeAdViewContainer view, final int tagId) {
         Log.d("HEJA-GAM", Integer.toString(tagId));
@@ -297,16 +298,14 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     @Override
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder.of(
-            "reloadAd", COMMAND_RELOAD_AD
+                "reloadAd", COMMAND_RELOAD_AD
         );
     }
 
     @Override
     public void receiveCommand(NativeAdViewContainer root, int commandId, @javax.annotation.Nullable ReadableArray args) {
-        switch (commandId) {
-            case COMMAND_RELOAD_AD:
-                root.reloadAd();
-                break;
+        if (commandId == COMMAND_RELOAD_AD) {
+            root.reloadAd();
         }
     }
 }

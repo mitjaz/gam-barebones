@@ -10,14 +10,9 @@ import com.google.android.gms.ads.MediaContent;
 import com.google.android.gms.ads.VideoController;
 import com.google.android.gms.ads.nativead.MediaView;
 
-
 import javax.annotation.Nullable;
 
 public class RNAdMediaView extends MediaView {
-
-    ReactContext mContext;
-    VideoController vc;
-    MediaContent mediaContent;
 
     private final Runnable measureAndLayout = new Runnable() {
         @Override
@@ -29,48 +24,7 @@ public class RNAdMediaView extends MediaView {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
-
-
-    public void setVideoController(VideoController videoController) {
-        vc = videoController;
-    }
-
-    public  void setMedia(MediaContent mc) {
-        mediaContent = mc;
-    }
-
-    public void getCurrentProgress() {
-        if (vc == null) return;
-        WritableMap progress = Arguments.createMap();
-        if (vc.getPlaybackState() == VideoController.PLAYBACK_STATE_PLAYING) {
-            if (mediaContent != null) {
-                progress.putString("currentTime", String.valueOf(mediaContent.getCurrentTime()));
-                progress.putString("duration", String.valueOf(mediaContent.getDuration()));
-                sendEvent(RNAdMediaViewManager.EVENT_ON_VIDEO_PROGRESS, progress);
-            }
-        }
-    }
-
-
-    public RNAdMediaView(ReactContext context) {
-        super(context);
-        mContext = context;
-        requestLayout();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        requestLayout();
-    }
-
-
+    ReactContext mContext;
     public VideoController.VideoLifecycleCallbacks videoLifecycleCallbacks = new VideoController.VideoLifecycleCallbacks() {
         @Override
         public void onVideoStart() {
@@ -106,6 +60,46 @@ public class RNAdMediaView extends MediaView {
 
         }
     };
+    VideoController vc;
+    MediaContent mediaContent;
+
+    public RNAdMediaView(ReactContext context) {
+        super(context);
+        mContext = context;
+        requestLayout();
+    }
+
+    public void setVideoController(VideoController videoController) {
+        vc = videoController;
+    }
+
+    public void setMedia(MediaContent mc) {
+        mediaContent = mc;
+    }
+
+    public void getCurrentProgress() {
+        if (vc == null) return;
+        WritableMap progress = Arguments.createMap();
+        if (vc.getPlaybackState() == VideoController.PLAYBACK_STATE_PLAYING) {
+            if (mediaContent != null) {
+                progress.putString("currentTime", String.valueOf(mediaContent.getCurrentTime()));
+                progress.putString("duration", String.valueOf(mediaContent.getDuration()));
+                sendEvent(RNAdMediaViewManager.EVENT_ON_VIDEO_PROGRESS, progress);
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        requestLayout();
+    }
 
     public void setPause(boolean pause) {
         if (vc == null) return;
