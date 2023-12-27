@@ -17,11 +17,13 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.google.android.gms.ads.AdInspectorError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnAdInspectorClosedListener;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
@@ -681,5 +683,15 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         if (mediaViewWasNull) {
             setNativeAd();
         }
+    }
+
+    public void showInspector() {
+        MobileAds.openAdInspector(context, new OnAdInspectorClosedListener() {
+            public void onAdInspectorClosed(@Nullable AdInspectorError error) {
+                if (error != null) {
+                    Log.e("NativeAdViewContainer", "Ad inspector closed with error: " + error.getMessage());
+                }
+            }
+        });
     }
 }

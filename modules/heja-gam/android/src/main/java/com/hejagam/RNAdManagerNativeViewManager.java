@@ -55,6 +55,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String EVENT_APP_EVENT = "onAppEvent";
     public static final String EVENT_AD_RECORD_IMPRESSION = "onAdRecordImpression";
     public static final int COMMAND_RELOAD_AD = 1;
+    public static final int COMMAND_SHOW_INSPECTOR = 2;
 
     private static final String REACT_CLASS = "CTKAdManagerNative";
     private final ReactApplicationContext applicationContext;
@@ -289,7 +290,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     @Override
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder.of(
-                "reloadAd", COMMAND_RELOAD_AD
+                "reloadAd", COMMAND_RELOAD_AD,
+                "showInspector", COMMAND_SHOW_INSPECTOR
         );
     }
 
@@ -297,6 +299,8 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public void receiveCommand(NativeAdViewContainer root, int commandId, @javax.annotation.Nullable ReadableArray args) {
         if (commandId == COMMAND_RELOAD_AD) {
             root.reloadAd();
+        } else if (commandId == COMMAND_SHOW_INSPECTOR) {
+            root.showInspector();
         }
     }
 }
