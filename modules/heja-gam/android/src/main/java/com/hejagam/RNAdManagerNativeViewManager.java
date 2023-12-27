@@ -40,6 +40,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String PROP_HEADLINE_TEXT_VIEW = "headlineTextView";
     public static final String PROP_BODY_TEXT_VIEW = "bodyTextView";
     public static final String PROP_ADVERTISER_NAME_VIEW = "advertiserNameView";
+    public static final String PROP_CALL_TO_ACTION_TEXT_VIEW = "callToActionTextView";
     public static final String PROP_ICON_VIEW = "iconView";
     public static final String PROP_IMAGE_VIEW = "imageView";
     public static final String PROP_MEDIA_VIEW = "mediaView";
@@ -53,7 +54,6 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
     public static final String EVENT_AD_CUSTOM_CLICK = "onAdCustomClick";
     public static final String EVENT_APP_EVENT = "onAppEvent";
     public static final String EVENT_AD_RECORD_IMPRESSION = "onAdRecordImpression";
-    public static final String PROP_CALL_TO_ACTION_TEXT_VIEW = "callToActionTextView";
     public static final int COMMAND_RELOAD_AD = 1;
 
     private static final String REACT_CLASS = "CTKAdManagerNative";
