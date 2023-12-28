@@ -179,6 +179,26 @@ RCT_EXPORT_METHOD(reloadAd : (nonnull NSNumber *)reactTag) {
       }];
 }
 
+RCT_EXPORT_METHOD(showInspector : (nonnull NSNumber *)reactTag) {
+  [_bridge.uiManager
+      addUIBlock:^(
+          __unused RCTUIManager *uiManager,
+          NSDictionary<NSNumber *, RNAdManagerNativeView *> *viewRegistry) {
+        RNAdManagerNativeView *view = viewRegistry[reactTag];
+        if (![view isKindOfClass:[RNAdManagerNativeView class]]) {
+          RCTLogError(@"Invalid view returned from registry, expecting "
+                      @"RNAdManagerNativeView, got: %@",
+                      view);
+        } else {
+          [GADMobileAds.sharedInstance presentAdInspectorFromViewController:[UIApplication sharedApplication]
+                                      .delegate.window.rootViewController
+            completionHandler:^(NSError *error) {
+              // Error will be non-nil if there was an issue and the inspector was not displayed.
+          }];
+        }
+      }];
+}
+
 RCT_CUSTOM_VIEW_PROPERTY(adsManager, NSString, RNAdManagerNativeView) {
   RNAdManagerNativeManager *_adsManager = [[_bridge
       moduleForClass:[RNAdManagerNativeManager class]] getAdsManager:json];

@@ -1,15 +1,21 @@
 package com.hejagam;
 
+import android.util.Log;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableNativeArray;
 import com.facebook.react.module.annotations.ReactModule;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @ReactModule(name = "CTKAdManagerNativeManager")
 public class RNAdManagerNativeManager extends ReactContextBaseJavaModule {
@@ -19,6 +25,8 @@ public class RNAdManagerNativeManager extends ReactContextBaseJavaModule {
      * @{Map} with all registered managers
      **/
     private final Map<String, AdsManagerProperties> propertiesMap = new HashMap<>();
+    private final AtomicBoolean isMobileAdsInitializeCalled = new AtomicBoolean(false);
+
 
     public RNAdManagerNativeManager(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -37,6 +45,12 @@ public class RNAdManagerNativeManager extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void init(final String adUnitID, ReadableArray testDevices) {
+        if (isMobileAdsInitializeCalled.getAndSet(true) == false) {
+            MobileAds.initialize(this.getReactApplicationContext(), initializationStatus -> {
+                Log.d("Heja-GAM", "Mobile ads initialized");
+            });
+        }
+
         final AdsManagerProperties adsManagerProperties = new AdsManagerProperties();
         adsManagerProperties.setAdUnitID(adUnitID);
 

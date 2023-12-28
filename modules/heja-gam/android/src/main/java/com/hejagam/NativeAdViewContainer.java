@@ -76,7 +76,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     Location location;
     String correlator;
     List<String> customClickTemplateIds;
-    int callToActionTextViewTagId;
+    protected boolean loadingAd = false;
 
     NativeAd nativeAd;
     RNAdMediaView mediaView;
@@ -128,14 +128,14 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             adSizes.add(adSize);
         }
         if (validAdSizes != null) {
-            for (int i = 0; i < validAdSizes.length; i++) {
-                if (!adSizes.contains(validAdSizes[i])) {
-                    adSizes.add(validAdSizes[i]);
+            for (AdSize validAdSize : validAdSizes) {
+                if (!adSizes.contains(validAdSize)) {
+                    adSizes.add(validAdSize);
                 }
             }
         }
 
-        if (adSizes.size() == 0) {
+        if (adSizes.isEmpty()) {
             adSizes.add(AdSize.BANNER);
         }
 
@@ -183,16 +183,12 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         builder.withAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(LoadAdError adError) {
+                loadingAd = false;
                 WritableMap event = Arguments.createMap();
                 WritableMap error = Arguments.createMap();
                 error.putString("message", adError.toString());
                 event.putMap("error", error);
                 sendEvent(RNAdManagerNativeViewManager.EVENT_AD_FAILED_TO_LOAD, event);
-            }
-
-            @Override
-            public void onAdLoaded() {
-                //sendEvent(RNAdManagerNativeViewManager.EVENT_AD_LOADED, null);
             }
 
             @Override
@@ -205,6 +201,11 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             public void onAdOpened() {
                 WritableMap event = Arguments.createMap();
                 sendEvent(RNAdManagerNativeViewManager.EVENT_AD_OPENED, event);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                loadingAd = false;
             }
 
             @Override
@@ -226,7 +227,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     public void reloadAd() {
         this.setupAdLoader();
 
-        if (adLoader != null) {
+        if (adLoader != null && loadingAd == false) {
+            loadingAd = true;
             UiThreadUtil.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -319,18 +321,18 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         sendNativeAdToJs(ad);
     }
 
+
     public void setNativeAd() {
         if (nativeAdView != null && nativeAd != null) {
-            nativeAdView.setNativeAd(nativeAd);
-
-            if (mediaView != null && nativeAdView.getMediaView() != null) {
-                nativeAdView.getMediaView().setMediaContent(nativeAd.getMediaContent());
+            if (mediaView != null) {
+                mediaView.setMediaContent(nativeAd.getMediaContent());
                 if (nativeAd.getMediaContent().hasVideoContent()) {
                     mediaView.setVideoController(nativeAd.getMediaContent().getVideoController());
                     mediaView.setMedia(nativeAd.getMediaContent());
                 }
             }
 
+            nativeAdView.setNativeAd(nativeAd);
         }
     }
 
@@ -678,9 +680,9 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
         RNAdMediaView mediaView = (RNAdMediaView) getView(tagId);
         this.mediaView = mediaView;
         boolean mediaViewWasNull = nativeAdView.getMediaView() == null;
-        nativeAdView.setMediaView(mediaView);
 
         if (mediaViewWasNull) {
+            nativeAdView.setMediaView(mediaView);
             setNativeAd();
         }
     }

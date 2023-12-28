@@ -23,3 +23,11 @@ export const reloadAd = (nodeHandle: number) => {
     []
   );
 };
+
+export const showInspector = (nodeHandle: number) => {
+  UIManager.dispatchViewManagerCommand(
+    nodeHandle,
+    UIManager.getViewManagerConfig(ComponentName).Commands.showInspector,
+    []
+  );
+};

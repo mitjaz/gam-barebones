@@ -110,7 +110,6 @@ public class RNAdMediaView extends MediaView {
     public void setMuted(boolean muted) {
         if (vc == null) return;
         vc.mute(muted);
-
     }
 
 
@@ -122,8 +121,7 @@ public class RNAdMediaView extends MediaView {
 
 
     public void sendEvent(String name, @Nullable WritableMap event) {
-
-        ReactContext reactContext = (ReactContext) mContext;
+        ReactContext reactContext = mContext;
         reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
                 getId(),
                 name,

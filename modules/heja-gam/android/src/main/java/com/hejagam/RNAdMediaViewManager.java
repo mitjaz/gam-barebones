@@ -40,7 +40,6 @@ public class RNAdMediaViewManager extends ViewGroupManager<RNAdMediaView> {
         return builder.build();
     }
 
-
     @Override
     public @Nullable
     Map<String, Integer> getCommandsMap() {
@@ -59,14 +58,12 @@ public class RNAdMediaViewManager extends ViewGroupManager<RNAdMediaView> {
         mediaView.setMuted(mute);
     }
 
-
     @Override
     public void receiveCommand(RNAdMediaView root, int commandId, @Nullable ReadableArray args) {
         if (commandId == COMMAND_GET_PROGRESS) {
             root.getCurrentProgress();
         }
     }
-
 
     @Override
     public String getName() {

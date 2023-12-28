@@ -12,7 +12,7 @@ import {
 } from 'react';
 import { NativeAdProps, AdType, NativeAdRef } from '../types/native';
 import { AdFormatLabel, AdManagerEventSize } from '../types/events';
-import { CTKAdManagerNative, reloadAd } from './CTKAdManagerNative';
+import { CTKAdManagerNative, reloadAd, showInspector } from './CTKAdManagerNative';
 import {
   NativeAdViewContext,
   NativeAdViewProvider,
@@ -50,6 +50,17 @@ export const NativeAdView = forwardRef(
 
     const { setNativeAd, setNativeAdView } = useContext(NativeAdViewContext);
 
+    const openGamInspector = () => {
+      const nodeHandle = findNodeHandle(nativeAdViewRef.current);
+
+      if (!nodeHandle) {
+        console.warn('No node handle found');
+        return;
+      }
+
+      showInspector(nodeHandle);
+    }
+
     const reload = () => {
       const nodeHandle = findNodeHandle(nativeAdViewRef.current);
 
@@ -61,7 +72,7 @@ export const NativeAdView = forwardRef(
       reloadAd(nodeHandle);
     };
 
-    useImperativeHandle(ref, () => ({ reloadAd: reload }));
+    useImperativeHandle(ref, () => ({ reloadAd: reload, showInspector: openGamInspector }));
 
     const handleSizeChange = ({
       nativeEvent,
@@ -132,7 +143,7 @@ export const NativeAdView = forwardRef(
 );
 
 export default forwardRef(
-  (props: NativeAdProps, ref: ForwardedRef<{ reloadAd: () => void }>) => {
+  (props: NativeAdProps, ref: ForwardedRef<NativeAdRef>) => {
     return (
       <NativeAdViewProvider>
         <NativeAdView {...props} ref={ref} />

@@ -100,4 +100,5 @@ export type NativeAdProps = NativeAdPropsBase & {
 
 export type NativeAdRef = {
   reloadAd: () => void;
+  showInspector: () => void;
 };
