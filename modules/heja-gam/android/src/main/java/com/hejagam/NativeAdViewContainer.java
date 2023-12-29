@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
 
 import androidx.annotation.Nullable;
 
@@ -80,6 +81,8 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
 
     NativeAd nativeAd;
     RNAdMediaView mediaView;
+
+    ReactViewGroup reactViewGroup;
 
     /**
      * Creates new NativeAdView instance and retrieves event emitter
@@ -313,6 +316,11 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
             nativeAd.destroy();
         }
 
+        this.removeAllViews();
+        if (reactViewGroup != null) {
+            this.addView(reactViewGroup);
+        }
+
         if (ad != null) {
             nativeAd = ad;
             setNativeAd();
@@ -340,7 +348,7 @@ public class NativeAdViewContainer extends ReactViewGroup implements AppEventLis
     @Override
     public void onAdManagerAdViewLoaded(AdManagerAdView adView) {
         this.adManagerAdView = adView;
-        removeAllViews();
+        this.removeAllViews();
         this.addView(adView);
 
         if (adView == null) {

@@ -17,6 +17,7 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.gms.ads.AdSize;
 import com.hejagam.customClasses.CustomTargeting;
 import com.hejagam.enums.TargetingEnums;
@@ -268,6 +269,7 @@ public class RNAdManagerNativeViewManager extends ViewGroupManager<NativeAdViewC
 
     @Override
     public void addView(NativeAdViewContainer parent, View child, int index) {
+        parent.reactViewGroup = (ReactViewGroup) child;
         parent.addView(child, index);
     }
 
